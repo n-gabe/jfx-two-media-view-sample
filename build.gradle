@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+	id 'application'
+	id 'eclipse'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+}
+
+group 'com.github.n-gabe.jfx-two-media-view-sample'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+java {
+	sourceCompatibility = '21'
+}
+
+javafx {
+    version = "21.0.2"
+    modules = ['javafx.controls', 'javafx.media']
+}
+
+application {
+    mainClass = 'com.github.ngabe.jfxtwomediaviewsample.TwoMediaViewSampleApp'
+}
+
+apply plugin: 'eclipse'
+
+eclipse.classpath.file {
+    whenMerged {
+        entries.findAll { isModule(it) }.each { it.entryAttributes['module'] = 'true' }
+    }
+}
+
+boolean isModule(entry) {
+    return (entry instanceof org.gradle.plugins.ide.eclipse.model.ProjectDependency) ||
+           (entry instanceof org.gradle.plugins.ide.eclipse.model.Library)  
+}
