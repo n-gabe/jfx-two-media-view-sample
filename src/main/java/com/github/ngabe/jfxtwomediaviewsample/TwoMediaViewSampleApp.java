@@ -24,13 +24,15 @@ public class TwoMediaViewSampleApp extends Application {
 
 	private final ObjectProperty<MediaPlayer> mediaPlayerProperty = new SimpleObjectProperty<>();
 
+	private BorderPane borderPane;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		final var borderPane = new BorderPane();
+		borderPane = new BorderPane();
 		borderPane.setCenter(createMediaViews());
 		borderPane.setBottom(createToolBar());
 
@@ -46,7 +48,16 @@ public class TwoMediaViewSampleApp extends Application {
 		final var stopButton = new Button("Stop");
 		stopButton.setOnAction(evt -> mediaPlayerProperty.set(null));
 
-		final var toolBar = new HBox(20, playButton, stopButton);
+		final var resetButton = new Button("Reset");
+		resetButton.setOnAction(evt -> {
+			try {
+				mediaPlayerProperty.set(null);
+			} finally {
+				borderPane.setCenter(createMediaViews());
+			}
+		});
+
+		final var toolBar = new HBox(20, playButton, stopButton, resetButton);
 		toolBar.setAlignment(Pos.CENTER);
 		return toolBar;
 	}
@@ -71,7 +82,7 @@ public class TwoMediaViewSampleApp extends Application {
 				System.out.println("stop: " + previous);
 				previous.stop();
 			}
-			
+
 			System.out.println("play: " + current);
 			mediaView.setMediaPlayer(current);
 		});
