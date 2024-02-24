@@ -79,11 +79,9 @@ public class TwoMediaViewSampleApp extends Application {
 		mediaView.setFitHeight(200);
 		mediaPlayerProperty.subscribe((previous, current) -> {
 			if (previous != null && previous.getStatus() == Status.PLAYING) {
-				System.out.println("stop: " + previous);
 				previous.stop();
 			}
 
-			System.out.println("play: " + current);
 			mediaView.setMediaPlayer(current);
 		});
 
@@ -94,7 +92,6 @@ public class TwoMediaViewSampleApp extends Application {
 	}
 
 	private void openMedia(final URL url) {
-		System.out.println("open: " + url);
 		final var mediaPlayer = new MediaPlayer(new Media(url.toString()));
 		mediaPlayer.setAutoPlay(true);
 		mediaPlayer.setOnError(() -> mediaPlayer.getError().printStackTrace());
